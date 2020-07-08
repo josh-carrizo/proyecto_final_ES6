@@ -1,6 +1,6 @@
-const lugares = [
 
- {
+const lugares = [
+    {
    "CUT (Código Único Territorial)": 1101,
    "Comuna": "Iquique",
    "Provincia": "Iquique",

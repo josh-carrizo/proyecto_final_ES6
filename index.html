@@ -120,9 +120,10 @@
             let htmlRegion_origen = '<option value="sin-region">Región y comuna</option><option value="sin-region">--</option>';
             let htmlRegion_destino = '<option value="sin-region">Región y comuna</option><option value="sin-region">--</option>';
             let htmlmarca_auto = '<option value="0">Marca vehículo</option><option value="sin-region">--</option>';
-
+            
+  
             for (lugar of lugares) {
-                htmlCoord_origen = ` <option value="${lugar['Latitud (Decimal)']},${lugar['Longitud (decimal)']}">${lugar.Comuna}</option>`;
+                htmlCoord_origen = `<option value="${lugar['Latitud (Decimal)']},${lugar['Longitud (decimal)']}">${lugar.Comuna}</option>`;
                 htmlCoord_destino = `<option value="${lugar['Latitud (Decimal)']},${lugar['Longitud (decimal)']}">${lugar.Comuna}</option>`;
 
                 $('#regiones_origen').append(htmlCoord_origen);
@@ -135,14 +136,6 @@
 
             };
             
-            /*
-            mostrar_ubicacion_actual = (ub) =>{
-               const latitud_ahora=ub.coords.latitude;
-               const longitud_ahora=ub.coords.longitude;
-            }
-            navigator.geolocation.getCurrentPosition(mostrar_ubicacion_actual);
-            */
-
             let calcular_distancia_tiempo= () => {
                 let Kms
                 let kms ;
@@ -168,7 +161,7 @@
                     htmlInfo_distancia= `<p value="${kms}" id="entre_dist"> Hay una distancia de ${kms} kilómetros y se estima ${tiempo} horas de viaje </p>`;
                     $('#info_dist').append(htmlInfo_distancia);
                     gasto_auto =(kms/rend_auto).toFixed(1);
-                    htmlgasto= `<p value="${gasto_auto} id="gasto_vehiculo"> Gastarás ${gasto_auto} litros en este viaje</p>`;                 
+                    htmlgasto= `<p value="${gasto_auto} id="gasto_vehiculo"> Gastarás ${gasto_auto} (L/100 km) en este viaje</p>`;                 
                     htmlRendimiento_veh= `<p value="${rend_auto}"> El vehículo posee un rendimiento de ${rend_auto} km/ltr </p>`;
                     $('#info_dist').append(htmlgasto);
                     $('#info_dist').append(htmlRendimiento_veh);
