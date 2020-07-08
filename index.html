@@ -8,7 +8,7 @@
     <title>Gasto bencina</title>
     <style>
         .jumbotron{
-            background: url( https://i.gifer.com/304e.gif) no-repeat  center;
+            background: url( https://i.gifer.com/304e.gif) repeat  center;
             background-size: 100% ;
             height: 45rem;
         }
@@ -16,8 +16,9 @@
             background-color: black;
             font-weight: bold;
             color:aliceblue;
-            padding: 30px;
-            border-radius: 15px;
+            padding: .8rem;
+            margin-left: 1rem;;
+            border-radius: .8rem;
             opacity: 0.85;
         }
 
@@ -53,8 +54,8 @@
 <body>
     <div class="jumbotron">
         <div class="container">
-            <h1 class="display-3 texto-blanco container-fluid text-center ">Calcula el litraje de bencina</h1>
             <div class="row">
+                <h1 class="col-12  display-3 texto-blanco text-center">Calculadora de bencina</h1>
                 <div class="col-sm-6">
                 <h1><span class="titulo_cuadro badge badge-info ">Selecciona ciudad de Origen</span></h1>
                 <select  id="regiones_origen" class="selector"></select>  
@@ -123,8 +124,8 @@
             
   
             for (lugar of lugares) {
-                htmlCoord_origen = `<option value="${lugar['Latitud (Decimal)']},${lugar['Longitud (decimal)']}">${lugar.Comuna}</option>`;
-                htmlCoord_destino = `<option value="${lugar['Latitud (Decimal)']},${lugar['Longitud (decimal)']}">${lugar.Comuna}</option>`;
+                htmlCoord_origen = `<option value="${lugar['Latitud (Decimal)']},${lugar['Longitud (decimal)']}">${lugar.Región}, ${lugar.Comuna}</option>`;
+                htmlCoord_destino = `<option value="${lugar['Latitud (Decimal)']},${lugar['Longitud (decimal)']}">${lugar.Región}, ${lugar.Comuna}</option>`;
 
                 $('#regiones_origen').append(htmlCoord_origen);
                 $('#regiones_destino').append(htmlCoord_destino);
@@ -148,6 +149,35 @@
                 let coor_de= document.getElementById('regiones_destino').value;
                 let rend_auto= document.getElementById('tipo_vehiculo').value;
 
+                //Constructor de clases
+                class vehiculo {
+                    constructor (marca, modelo, tamano_motor, rendimiento){
+                    this.marca = marca;
+                    this.modelo = modelo;
+                    this.tamano_motor = velocidad;
+                    this.rendimiento = rendimiento; 
+                    }
+                }
+                class sedan extends vehiculo{
+                    constructor (marca, modelo, tamano_motor, rendimiento, traccion= 'Delantera'){
+                    super(marca, modelo, tamano_motor, rendimient)
+                    this.traccion = traccion;
+                    }
+                }
+                class camioneta extends vehiculo{
+                    constructor (marca, modelo, tamano_motor, rendimiento, tipo='Pickup'){
+                    super(marca, modelo, tamano_motor, rendimiento)
+                    this.tipo = tipo; //Pickup SUV
+                    }
+                }
+                class motocicleta extends vehiculo{
+                    constructor (marca, modelo, tamano_motor, rendimiento){
+                    super(marca, modelo, cilindrada, rendimiento )
+                    this.cilindrada = cilindrada; 
+                    }
+                }
+
+
                 fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${coor_or}&destinations=${coor_de}&key=AIzaSyAlDSRLGoUqLzoFZQlR7wvyRoNdsufoQls`)
                 
                 .then(datos => datos.json())
@@ -161,7 +191,7 @@
                     htmlInfo_distancia= `<p value="${kms}" id="entre_dist"> Hay una distancia de ${kms} kilómetros y se estima ${tiempo} horas de viaje </p>`;
                     $('#info_dist').append(htmlInfo_distancia);
                     gasto_auto =(kms/rend_auto).toFixed(1);
-                    htmlgasto= `<p value="${gasto_auto} id="gasto_vehiculo"> Gastarás ${gasto_auto} (L/100 km) en este viaje</p>`;                 
+                    htmlgasto= `<p value="${gasto_auto} id="gasto_vehiculo"> Gastarás ${gasto_auto} litros en este viaje</p>`;                 
                     htmlRendimiento_veh= `<p value="${rend_auto}"> El vehículo posee un rendimiento de ${rend_auto} km/ltr </p>`;
                     $('#info_dist').append(htmlgasto);
                     $('#info_dist').append(htmlRendimiento_veh);
