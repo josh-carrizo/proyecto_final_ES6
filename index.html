@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Gasto bencina</title>
+    <style>
+        .jumbotron{
+            background: url( https://i.gifer.com/304e.gif) no-repeat  center;
+            background-size: 100% ;
+            height: 45rem;
+        }
+        .texto-blanco{
+            background-color: black;
+            font-weight: bold;
+            color:aliceblue;
+            padding: 30px;
+            border-radius: 15px;
+            opacity: 0.85;
+        }
+
+        .titulo_cuadro{
+            background-color: black;
+            font-weight: bold;
+            color:aliceblue;
+            padding: 20px;
+            border-radius: 15px;
+            opacity: 0.85;
+        }
+        .texto_consulta{
+            font-size: 30px;
+            background-color: black;
+            font-weight: bold;
+            color:aliceblue
+        }
+        .selector{
+            width: 20rem;
+            margin-left: .5rem;
+
+        }
+        #info_dist{
+            background-color: white;
+            opacity: .75;
+        }
+
+    
+
+   
+    </style>
+</head>
+<body>
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-3 texto-blanco container-fluid text-center ">Calcula el litraje de bencina</h1>
+            <div class="row">
+                <div class="col-sm-6">
+                <h1><span class="titulo_cuadro badge badge-info ">Selecciona ciudad de Origen</span></h1>
+                <select  id="regiones_origen" class="selector"></select>  
+                </div>
+                <div class="col-sm-6">
+                <h1><span class="titulo_cuadro badge badge-info ">Selecciona ciudad de Destino</span></h1>
+                <select  id="regiones_destino" class="selector"></select>
+                </div>
+            </div>
+            <br>
+
+            <div class="row">
+                <div class="col-sm-6 select_car">
+                    <h1><span class="titulo_cuadro badge badge-info ">Selecciona tu vehículo</span></h1>
+                    <select  id="tipo_vehiculo" class="selector"> 
+                        <!--
+                        <option value="12">Auto</option>
+                        <option value="10">Camioneta</option>
+                        <option value="17.5">Moto</option>
+                        <option value="5">Camión</option>
+                        -->
+                    </select>   
+                    </div>
+            </div>
+            <br>
+            <button type="button" class="btn btn-primary btn-lg btn-block texto_consulta" data-toggle="modal" data-target="#exampleModalCenter">
+                Consulta acá!
+              </button>
+              
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <p  id="info_dist"> 
+                        </p>   
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+        </div>  
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="lugares.js"></script>
+    <script src="autos.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            let iRegion = 0;
+            let htmlRegion_origen = '<option value="sin-region">Región y comuna</option><option value="sin-region">--</option>';
+            let htmlRegion_destino = '<option value="sin-region">Región y comuna</option><option value="sin-region">--</option>';
+            let htmlmarca_auto = '<option value="0">Marca vehículo</option><option value="sin-region">--</option>';
+
+            for (lugar of lugares) {
+                htmlCoord_origen = ` <option value="${lugar['Latitud (Decimal)']},${lugar['Longitud (decimal)']}">${lugar.Comuna}</option>`;
+                htmlCoord_destino = `<option value="${lugar['Latitud (Decimal)']},${lugar['Longitud (decimal)']}">${lugar.Comuna}</option>`;
+
+                $('#regiones_origen').append(htmlCoord_origen);
+                $('#regiones_destino').append(htmlCoord_destino);
+
+            };
+            for (auto of autos) {
+                htmlmarca_auto = `<option value="${auto['FUEL CONSUMPTION']}">${auto['MAKE']},${auto['MODEL']},${auto['ENGINE SIZE']}</option>`;
+                $('#tipo_vehiculo').append(htmlmarca_auto);
+
+            };
+            
+            /*
+            mostrar_ubicacion_actual = (ub) =>{
+               const latitud_ahora=ub.coords.latitude;
+               const longitud_ahora=ub.coords.longitude;
+            }
+            navigator.geolocation.getCurrentPosition(mostrar_ubicacion_actual);
+            */
+
+            let calcular_distancia_tiempo= () => {
+                let Kms
+                let kms ;
+                let tiempo;
+                let htmlInfo_distancia;
+                let gasto_auto;
+                let htmlgasto;
+                let htmlRendimiento_veh;
+                let coor_or= document.getElementById('regiones_origen').value;
+                let coor_de= document.getElementById('regiones_destino').value;
+                let rend_auto= document.getElementById('tipo_vehiculo').value;
+
+                fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${coor_or}&destinations=${coor_de}&key=AIzaSyAlDSRLGoUqLzoFZQlR7wvyRoNdsufoQls`)
+                
+                .then(datos => datos.json())
+                .then(function (datos_json){
+
+                    console.log(datos_json);
+                    let Kms= (datos_json.rows[0].elements[0].distance.value)/1000;
+                    kms= Kms.toFixed(1)
+                    let Tiempo = (datos_json.rows[0].elements[0].duration.value)/3600;  //de segundos a horas
+                    tiempo = Tiempo.toFixed(1)
+                    htmlInfo_distancia= `<p value="${kms}" id="entre_dist"> Hay una distancia de ${kms} kilómetros y se estima ${tiempo} horas de viaje </p>`;
+                    $('#info_dist').append(htmlInfo_distancia);
+                    gasto_auto =(kms/rend_auto).toFixed(1);
+                    htmlgasto= `<p value="${gasto_auto} id="gasto_vehiculo"> Gastarás ${gasto_auto} litros en este viaje</p>`;                 
+                    htmlRendimiento_veh= `<p value="${rend_auto}"> El vehículo posee un rendimiento de ${rend_auto} km/ltr </p>`;
+                    $('#info_dist').append(htmlgasto);
+                    $('#info_dist').append(htmlRendimiento_veh);
+
+                    
+                })
+
+                .catch(function (error){
+                    alert( `Error: ${error}`);
+                });
+
+            }
+
+            $(document).on('click','button',function(){
+                $('#info_dist').html('');
+                calcular_distancia_tiempo();
+            });        
+        });
+
+
+    </script>
+
+</body>
+</html>
