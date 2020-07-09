@@ -123,8 +123,8 @@
             
   
             for (lugar of lugares) {
-                htmlCoord_origen = `<option value="${lugar['Latitud (Decimal)']},${lugar['Longitud (decimal)']}">${lugar.Comuna}</option>`;
-                htmlCoord_destino = `<option value="${lugar['Latitud (Decimal)']},${lugar['Longitud (decimal)']}">${lugar.Comuna}</option>`;
+                htmlCoord_origen = `<option value="${lugar['Latitud (Decimal)']},${lugar['Longitud (decimal)']}">${lugar.Región},${lugar.Comuna}</option>`;
+                htmlCoord_destino = `<option value="${lugar['Latitud (Decimal)']},${lugar['Longitud (decimal)']}">${lugar.Región},${lugar.Comuna}</option>`;
 
                 $('#regiones_origen').append(htmlCoord_origen);
                 $('#regiones_destino').append(htmlCoord_destino);
@@ -161,7 +161,7 @@
                     htmlInfo_distancia= `<p value="${kms}" id="entre_dist"> Hay una distancia de ${kms} kilómetros y se estima ${tiempo} horas de viaje </p>`;
                     $('#info_dist').append(htmlInfo_distancia);
                     gasto_auto =(kms/rend_auto).toFixed(1);
-                    htmlgasto= `<p value="${gasto_auto} id="gasto_vehiculo"> Gastarás ${gasto_auto} (L/100 km) en este viaje</p>`;                 
+                    htmlgasto= `<p value="${gasto_auto} id="gasto_vehiculo"> Gastarás ${gasto_auto} litros en este viaje</p>`;                 
                     htmlRendimiento_veh= `<p value="${rend_auto}"> El vehículo posee un rendimiento de ${rend_auto} km/ltr </p>`;
                     $('#info_dist').append(htmlgasto);
                     $('#info_dist').append(htmlRendimiento_veh);
